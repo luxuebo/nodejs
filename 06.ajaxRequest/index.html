@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>index</title>
+	<script src='/jquery-3.2.1.min.js'></script>
+</head>
+<body>
+	<!-- 前端运行在localhost:3000,后端接口运行在localhost:4000 -->
+	<div>首页</div>
+	<button type="button" id="get">get请求</button>
+	<button type="button" id="post">post请求</button>
+	<script>
+		$('#get').click(function(){
+			$.ajax({
+				url:'http://localhost:4000/testget',
+				type:'GET',
+				dataType:'json',
+				data:{name:'John1',location:'Boston1',age:'21岁'},
+				success:function(data){
+					console.log(data)
+				}
+			})
+		})
+		$('#post').click(function(){
+			$.ajax({
+				url:'http://localhost:4000/testpost',
+				type:'POST',
+				dataType:'json',
+				data:{name:'John2',location:'Boston2',age:'22岁'},
+				success:function(data){
+					console.log(data)
+				}
+			})
+		})
+		
+	</script>
+
+</body>
+</html>
