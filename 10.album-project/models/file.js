@@ -9,7 +9,6 @@ exports.getAllAlbums = function(callback){
        let allFiles=[];//保存uploads下一级的文件夹
        (function iterator(i){
             if(i == files.length){
-                console.log(allFiles);
                 callback(null,allFiles);
                 return;
             }
@@ -23,6 +22,30 @@ exports.getAllAlbums = function(callback){
                 iterator(i + 1);
             })
        })(0);
-
+    })
+}
+exports.getAlbumAllImages = function(albumfile,callback){
+    let imagsFile = './uploads/'+albumfile+'/'
+    fs.readdir(imagsFile,function(err,files){
+       if(err){
+           callback('找不到uploads文件',null)
+           return
+       }
+       let allFiles=[];//保存文件
+       (function iterator(i){
+            if(i == files.length){
+                callback(null,allFiles);
+                return;
+            }
+            fs.stat(imagsFile+files[i],function(err,stats){
+                if(err){
+                    callback('找不到文件',null)
+                }
+                if(stats.isFile()){
+                    allFiles.push(files[i]);
+                }
+                iterator(i + 1);
+            })
+       })(0);
     })
 }
