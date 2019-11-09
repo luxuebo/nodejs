@@ -6,18 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>相册</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-        .row h5 {
+        .row h4 {
             text-align: center;
         }
-        .img {
-            width: 200px;
-            height: 200px;
-        }
-        .ck{
-            width: 30px;
-            height: 30px;
+        .container #sel{
+            width: 100px;
         }
     </style>
 </head>
@@ -33,8 +28,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">小小相册</a>
+                <a class="navbar-brand" href="#">我的相册</a>
             </div>
+
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">全部相册<span class="sr-only">(current)</span></a></li>
@@ -42,31 +38,25 @@
                 </ul>
             </div>
         </div>
-        <ol class="breadcrumb">
-            <li><a href="/">全部相册</a></li>
-            <li class="active"><%= albumName %></li>
-        </ol>
     </nav>
-
     <div class="container">
-
         <div class="row">
-            <form action="/delimg" method="POST" >
-                <% for(var i = 0 ; i < images.length ; i++){ %>
-                <div class="col-xs-6 col-md-3">
-                    <input type="checkbox" name="<%= albumName %>/<%= images[i] %>" class="ck">
-                    <input type="text" hidden name="_<%= albumName %>">
-                    <img src="<%= images[i] %>" alt="..." class="img">
-                    <h5><%= images[i].replace(/\.[a-zA-Z]+$/,'') %></h5>
+            <form action="/upimg" method="POST" enctype="multipart/form-data">
+                <div>请选择上传的文件夹</div>
+                <select class="form-control" name="folder" id="sel">
+                    <% for(var i = 0 ; i < allfolders.length ; i++){ %>
+                    <option><%= allfolders[i] %></option>
+                    <% } %>
+                </select>
+                <div class="form-group">
+                    <input type="file" id="exampleInputFile" name="file">
                 </div>
-                <% } %>
-                <button type="submit" class="btn btn-default delbtn">删除</button>
+                <button type="submit" class="btn btn-default psntn">提交上传</button>
             </form>
         </div>
     </div>
-
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
