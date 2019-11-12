@@ -187,17 +187,6 @@ router.post('/deluser',(req,res,next)=>{
     })
     
 })
-
-router.post('/login',(req,res,next)=>{
-    let params = req.body;
-    console.log(params)
-    res.json({
-        code:200,
-        token:'123456',
-        msg:'登录成功'
-    })
-})
-
 module.exports = {
     userRouter:router
 }

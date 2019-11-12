@@ -21,7 +21,7 @@ function adduser(params,callback){
         }
     }
     if(!isadd){
-        callback(true,'参数不对')
+        callback('参数不对')
         return
     }
     let databaseName = mongodbconfig.databaseName.firstdemo;
@@ -67,7 +67,7 @@ function updateuser(params,callback){
     });
 
     if(!idlist.length){
-        callback(true,'没有选择需要更新的数据')
+        callback('没有选择需要更新的用户')
         return;
     }
     update(databaseName,col,{idlist:idlist,updata:updata},function(err,result){
