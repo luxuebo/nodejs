@@ -1,6 +1,6 @@
 let express = require("express");
 let bodyParser = require("body-parser");
-let router = require('./router')
+let {userRouter,loginRouter} = require('./router/index')
 let app = express();
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -13,7 +13,8 @@ app.all('*', (req, res, next) => {
     res.header("Content-Type", "application/json;charset=utf-8");
     next();
 });
-app.use(`/`,router)
-app.listen(3000,'127.0.0.1',()=>{
-    console.log('server run at http://localhost:3000')
+app.use(`/`,userRouter)
+app.use(`/`,loginRouter)
+app.listen(3000,()=>{
+    console.log('server run at http://139.129.97.1:3000')
 })

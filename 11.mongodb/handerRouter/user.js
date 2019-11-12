@@ -2,11 +2,10 @@ exports.adduser = adduser;
 exports.queryuser = queryuser;
 exports.updateuser = updateuser;
 exports.deluser = deluser;
-let {add,query,update,del} = require('./db')
-let {mongodbconfig} = require('./config')
+let {add,query,update,del} = require('../mongodb/db')
+let {mongodbconfig} = require('../mongodb/config')
 //添加用户
-function adduser(params,res){
-    console.log(params)
+function adduser(params,callback){
     let requireParamsList = ['username','age','sex','role'];
     let addData = {
         username:'',
@@ -22,49 +21,37 @@ function adduser(params,res){
         }
     }
     if(!isadd){
-        res.json({
-            code:400,
-            msg:'参数不对'
-        })
+        callback(true,'参数不对')
         return
     }
     let databaseName = mongodbconfig.databaseName.firstdemo;
     let col = mongodbconfig.collection.firstdemo.user;
     add(databaseName,col,addData,function(err,result){
         if(err){
-            res.json({
-                code:401,
-                msg:'添加用户失败'
-            })
+            callback(err)
+            
         }else{
-            res.json({
-                code:200,
-                msg:'添加用户成功'
-            })
+            callback(null,result)
         }
     })
 }
 
 //查询用户
-function queryuser(params,res){
+function queryuser(params,callback){
     let databaseName = mongodbconfig.databaseName.firstdemo;
     let col = mongodbconfig.collection.firstdemo.user;
     query(databaseName,col,params,function(err,doc){
         if(err){
-            res.json({
-                code:401,
-                msg:'查询失败'
-            })
-            return;
+            callback(err)
         }else{
-            res.send(doc) 
+            callback(null,doc)
         }
     })
 
 }
 
 //修改用户
-function updateuser(params,res){
+function updateuser(params,callback){
     
     let databaseName = mongodbconfig.databaseName.firstdemo;
     let col = mongodbconfig.collection.firstdemo.user;
@@ -80,39 +67,29 @@ function updateuser(params,res){
     });
 
     if(!idlist.length){
-        res.json({
-            code:400,
-            msg:'没有选择需要更新的数据'
-        })
+        callback(true,'没有选择需要更新的数据')
         return;
     }
     update(databaseName,col,{idlist:idlist,updata:updata},function(err,result){
         if(err){
-            res.json({
-                code:401,
-                data:err,
-                msg:result
-            })
+            callback(err)
             return;
         }else{
-            res.send(result) 
+            callback(null,result) 
         }
     })
 }
 //删除用户
-function deluser(idlist,res){
+function deluser(idlist,callback){
+   
     let databaseName = mongodbconfig.databaseName.firstdemo;
     let col = mongodbconfig.collection.firstdemo.user;
     del(databaseName,col,idlist,function(err,msg){
         if(err){
-            res.json({
-                code:401,
-                data:err,
-                msg:msg
-            })
+            callback(err)
             return;
         }else{
-            res.send(msg) 
+            callback(null,msg) 
         }
 
     })

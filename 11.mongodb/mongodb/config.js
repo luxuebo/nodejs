@@ -1,5 +1,5 @@
 exports.mongodbconfig={
-    url:'mongodb://localhost:27017',
+    url:'mongodb://139.129.97.1:27017',
     databaseName:{
         firstdemo:"firstdemo",
         mydata:"mydata"
