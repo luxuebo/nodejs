@@ -6,22 +6,35 @@ let {add,query,update,del} = require('../mongodb/db')
 let {mongodbconfig} = require('../mongodb/config')
 //添加用户
 function adduser(params,callback){
-    let requireParamsList = ['username','age','sex','role'];
-    let addData = {
+    //校验参数是否符合规范
+    let addData = [{
         username:'',
-        age:'',
-        sex:'',
+        password:'',
+        email:'',
         role:''
-    };
-    let isadd = false;
-    for(let key in params){
-        if(requireParamsList.includes(key)){
-            isadd = true;
-            addData[key] = params[key]
+    }];
+    let accordlist = [];
+    let errlist = []
+    params.forEach((item,index)=>{
+        let requireParamsList = ['username','password','email','role'];
+        let accord = 0;
+        for(let key of Object.keys(item)){
+            if(requireParamsList.includes(key)){
+                addData[0][key] = item[key];
+                requireParamsList.splice(index,1)
+                accord++
+            }
         }
-    }
-    if(!isadd){
-        callback('参数不对')
+        accordlist.push(accord)
+    })
+    accordlist.forEach((item,index)=>{
+        if(item !=4){
+            errlist.push(params[index])
+        }
+    })
+    if(errlist.length){
+
+        callback(errlist)
         return
     }
     let databaseName = mongodbconfig.databaseName.firstdemo;
@@ -56,16 +69,16 @@ function updateuser(params,callback){
     let databaseName = mongodbconfig.databaseName.firstdemo;
     let col = mongodbconfig.collection.firstdemo.user;
     let idlist = [];
-    let updata = {};
-    params.forEach(item => {
+    let updata = [];
+    params.forEach((item,index) => {
         idlist.push(item._id)
-        for(let key of item.keys()){
+        updata.push({})
+        for(let key of Object.keys(item)){
             if(key !='_id'){
-                updata[key] = item.key
+                updata[index][key] = item[key]
             }
         }
     });
-
     if(!idlist.length){
         callback('没有选择需要更新的用户')
         return;

@@ -51,22 +51,17 @@ router.post('/adduser',(req,res,next)=>{
     console.log('添加用户请求参数')
     console.log(params)
      /* 
-    params：[{
+    params：[
         {
             "username": "xiaoming",
             "age": "20",
             "sex": "男",
             "role": "admin"
         }
-    },{
-            "username": "xiaoming",
-            "age": "20",
-            "sex": "男",
-            "role": "admin"
-    }]
+    ]
     
     */
-    queryuser(params,function(err,result){
+    queryuser({username:params[0].username},function(err,result){
         if(err){
             res.json({
                 code:401,
@@ -76,17 +71,17 @@ router.post('/adduser',(req,res,next)=>{
             console.log('查询用户结果')
             console.log(err)
         }else{
-            if(!result.length){
+            if(result.length){
                 res.json({
                     code:201,
                     data:result,
                     msg:'该用户已存在'
                 })
-                console.log('添加用户失败')
-                console.log('该用户已存在')
+                console.log('添加用户失败,该用户已存在')
+                console.log(result)
                 return;
             }
-            adduser(params,function(err,result){
+            adduser(params,function(err,results){
                 if(err){
                    res.json({
                     code:401,
@@ -98,11 +93,11 @@ router.post('/adduser',(req,res,next)=>{
                 }else{
                    res.json({
                        code:200,
-                       data:result,
+                       data:results[0].ops,
                        msg:'添加用户成功'
                    })
                    console.log('添加用户成功')
-                   console.log(result)
+                   console.log(results[0].ops)
                 }
             })
         }
@@ -147,7 +142,6 @@ router.post('/updateuser',(req,res,next)=>{
                 data:result,
                 msg:'更新用户成功'
             })
-            console.log('更新用户成功')
             console.log(result)
         }
 
@@ -160,11 +154,10 @@ router.post('/deluser',(req,res,next)=>{
     console.log('删除用户请求参数')
     console.log(params)
     /*
-        params:[{
-            "_id": "5dc7dfe209315320e4c478ap",
-        },{
-            "_id": "5dc7dfe209315320e4c478ad",
-        }]
+        params:[
+            "5dc7dfe209315320e4c478ap",
+            "5dc7dfe209315320e4c478ad",
+        ]
     */
    deluser(params,function(err,result){
         if(err){
