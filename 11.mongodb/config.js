@@ -1,14 +1,8 @@
-let enviroment = 'development' //development,production
-let server={}
-if(enviroment == 'development'){
-	server={
-		host:'127.0.0.1',
-		port:'3000'
+let env = 'development'
+module.exports={
+	env:env,
+	server:{
+		host:env=='development'?'127.0.0.1':'139.129.97.1',
+		port:env=='development'?3000:3000
 	}
-}else if(enviroment=='production'){
-	server={
-		host:'139.129.97.1',
-		port:'3000'
-	}	
 }
-module.exports=server

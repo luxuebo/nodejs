@@ -1,4 +1,4 @@
-let env = require('./config.js')
+let {env,server} = require('./config.js')
 let express = require("express");
 let bodyParser = require("body-parser");
 let {userRouter,loginRouter} = require('./router/index')
@@ -16,6 +16,12 @@ app.all('*', (req, res, next) => {
 });
 app.use(`/`,userRouter)
 app.use(`/`,loginRouter)
-app.listen(env.port,env.host,()=>{
-    console.log(`server run at http://${env.host}:${env.port}`)
-})
+if(env == 'development'){
+	app.listen(server.port,server.host,()=>{
+    console.log(`server run at http://${server.host}:${server.port}`)
+	})
+}else{
+	app.listen(server.port,()=>{
+    console.log(`server run at http://${server.host}:${server.port}`)
+    })
+}
